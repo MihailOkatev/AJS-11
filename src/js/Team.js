@@ -7,23 +7,27 @@ import { Magician } from './Magician';
 export class Team {
   constructor() {
     this.members = [new Bowerman('Robin'), new Daemon('Hellboy'), new Undead('Baba Yaga'), new Magician('Merlin')];
-    this[Symbol.iterator] = () => {
-      let current = 0;
-      const end = this.members.length;
-      return {
-        next() {
-          if (current <= end) {
-            return {
-              // eslint-disable-next-line no-plusplus
-              value: this.members[current++],
-              done: false,
-            };
-          }
+  }
+
+  [Symbol.iterator]() {
+    let current = 0;
+    const end = this.members.length;
+    const characters = Object.values(this.members);
+    return {
+      next() {
+        if (current <= end) {
+          // eslint-disable-next-line no-plusplus
+          current++;
           return {
-            done: true,
+            value: characters[current - 1],
+            done: false,
           };
-        },
-      };
+        }
+        return {
+          value: undefined,
+          done: true,
+        };
+      },
     };
   }
 }
